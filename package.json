@@ -1,6 +1,6 @@
 {
   "name": "alpr-camera",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,14 +15,17 @@
   "dependencies": {
     "react-native-fs": "^2.20.0",
     "@ismaelmoreiraa/vision-camera-ocr": "3.0.1",
-    "react-native-vision-camera": "4.0.1",
-    "react-native-worklets-core": "^1.1.1"
+    "react-native-worklets-core": "^1.1.1",
+    "react-native-vision-camera": "^4.0.1"
+
   },
   "peerDendencies": {
     "react": "*",
     "react-native": "*"
   },
   "devDependencies": {
+    "react": "18.2.0",
+    "react-native": "0.72.13",
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
@@ -42,10 +45,24 @@
   "engines": {
     "node": ">=16"
   },
-  "description": "This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).",
+  "description": "Easy Setup JS Component done with vision-camera and vision-camera-ocr",
   "directories": {
     "example": "example"
   },
+"files": [
+  "src",
+  "lib",
+  "android",
+  "ios",
+  "cpp",
+  "VisionCameraOcr.podspec",
+  "!lib/typescript/example",
+  "!android/build",
+  "!ios/build",
+  "!**/__tests__",
+  "!**/__fixtures__",
+  "!**/__mocks__"
+],
   "keywords": [],
   "author": "",
   "license": "ISC"

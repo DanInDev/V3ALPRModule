@@ -9,7 +9,8 @@ import {
   useCameraFormat,
 } from 'react-native-vision-camera';
 
-import { ALPRCamera } from 'alpr-camera';
+import {scanOCR} from '@ismaelmoreiraa/vision-camera-ocr';
+import { ALPRCamera } from '../src/camera/ALPRCamera';
 
 export default function App() {
 
