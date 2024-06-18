@@ -1,4 +1,4 @@
-import { TextBlock} from '@DanInDev/vision-camera-ocr';
+import {TextBlock} from '@ismaelmoreiraa/vision-camera-ocr';
 import { FilterOptions } from './filterOptions';
 
 
@@ -6,7 +6,7 @@ import { FilterOptions } from './filterOptions';
 
       Defines helper functions for text processing and filtering.
 
-*/
+*/ //glpat-mzkqAktZm6wZsbArACc6
 
 
 /**

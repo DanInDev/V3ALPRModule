@@ -1,4 +1,4 @@
-import { OCRFrame, TextBlock } from '@DanInDev/vision-camera-ocr';
+import {OCRFrame, TextBlock} from '@ismaelmoreiraa/vision-camera-ocr';
 import { FilterOptions } from './filterOptions';
 import { BlockToString, isWithinFilterOption, sanitizeString } from './filterHelper';
 import { filterMap } from './filterMap';

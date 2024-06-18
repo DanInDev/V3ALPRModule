@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera, runAsync, useCameraDevice, useCameraPermission, useFrameProcessor } from 'react-native-vision-camera';
 
-import { OCRFrame, scanOCR } from '@DanInDev/vision-camera-ocr';
+import {scanOCR, OCRFrame} from '@ismaelmoreiraa/vision-camera-ocr';
 import { Worklets } from 'react-native-worklets-core';
 import { applyFilterFunctions } from '../filtering/filterService';
 import { callLimiter } from '../api/callLimiter';
