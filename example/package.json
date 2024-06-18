@@ -12,7 +12,11 @@
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.72.13",
-    "alpr-camera": "0.0.1"
+    "@ismaelmoreiraa/vision-camera-ocr": "3.0.1",
+    "react-native-worklets-core": "^1.1.1",
+    "react-native-vision-camera": "^4.0.1",
+    "react-native-fs": "^2.20.0",
+    "alpr-camera": "0.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

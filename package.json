@@ -1,6 +1,6 @@
 {
   "name": "alpr-camera",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "private": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,17 +12,16 @@
     "test": "jest",
     "build": "tsc"
   },
-  "dependencies": {
-    "react-native-fs": "^2.20.0",
-    "@ismaelmoreiraa/vision-camera-ocr": "3.0.1",
-    "react-native-worklets-core": "^1.1.1",
-    "react-native-vision-camera": "^4.0.1"
 
-  },
   "peerDendencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@ismaelmoreiraa/vision-camera-ocr": "3.0.1",
+    "react-native-worklets-core": "^1.1.1",
+    "react-native-vision-camera": "^4.0.1",
+    "react-native-fs": "^2.20.0"
   },
+  
   "devDependencies": {
     "react": "18.2.0",
     "react-native": "0.72.13",
@@ -46,23 +45,17 @@
     "node": ">=16"
   },
   "description": "Easy Setup JS Component done with vision-camera and vision-camera-ocr",
-  "directories": {
-    "example": "example"
-  },
-"files": [
-  "src",
-  "lib",
-  "android",
-  "ios",
-  "cpp",
-  "VisionCameraOcr.podspec",
-  "!lib/typescript/example",
-  "!android/build",
-  "!ios/build",
-  "!**/__tests__",
-  "!**/__fixtures__",
-  "!**/__mocks__"
-],
+  "files": [
+    "dist/",
+    "node_modules/react-native-fs",
+    "node_modules/react-native-vision-camera",
+    "node_modules/@ismaelmoreiraa/vision-camera-ocr",
+    "src/",
+    "index",
+    "README.md",
+    "package.json"
+  ],
+
   "keywords": [],
   "author": "",
   "license": "ISC"
