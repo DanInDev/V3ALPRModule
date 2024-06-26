@@ -122,8 +122,6 @@ const findPlatesAndVerify = Worklets.createRunOnJS((ocrFrame: OCRFrame) => {
  * 
  * @param {string} filterOption - The new filter option to apply.
  * @returns {void}
- * 
- * @NOTE This hook updates the current filter and logs the change.
  */
 
 useEffect(() => {
