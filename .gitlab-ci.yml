@@ -14,18 +14,18 @@ before_script:
 build:
   stage: build
   script:
-    - docker build -t alprcamera-module .
+    - docker build -t alpr-camera-module .
       
 test:
   stage: test
   script:
-    - docker run alprcamera-module npm test
+    - docker run alpr-camera-module npm test
 
 
 deploy:
   stage: deploy
   script:
-    - docker run -e CI_SERVER_HOST -e CI_PROJECT_ID -e CI_JOB_TOKEN alprcamera-module sh -c "echo \"@alprapp:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/\" > .npmrc && echo \"//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}\" >> .npmrc && npm publish"
+    - docker run -e CI_SERVER_HOST -e CI_PROJECT_ID -e CI_JOB_TOKEN alpr-camera-module sh -c "echo \"@alprapp:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/\" > .npmrc && echo \"//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}\" >> .npmrc && npm publish"
   dependencies:
     - build  
     - test

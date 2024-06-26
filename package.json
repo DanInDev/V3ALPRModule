@@ -1,5 +1,5 @@
 {
-  "name": "alpr-camera-component",
+  "name": "alpr-camera-module",
   "version": "0.0.22",
   "private": false,
   "main": "./src/index.ts",
