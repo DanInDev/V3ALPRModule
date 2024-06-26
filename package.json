@@ -1,6 +1,6 @@
 {
   "name": "alpr-camera-component",
-  "version": "0.0.11",
+  "version": "0.0.22",
   "private": false,
   "main": "./src/index.ts",
   "types": "./src/index.d.ts",
@@ -12,7 +12,7 @@
     "test": "jest",
     "build": "tsc"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "*",
     "react-native": "*",
     "@ismaelmoreiraa/vision-camera-ocr": "3.0.1",
@@ -43,7 +43,7 @@
   "engines": {
     "node": ">=16"
   },
-  "description": "Easy Setup TS Component done with vision-camera and vision-camera-ocr",
+  "description": "Easily ready and highly customizable TS Component done with vision-camera and vision-camera-ocr",
   "files": [
     "src/",
     "README.md",

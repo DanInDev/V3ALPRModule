@@ -1,0 +1,32 @@
+image: docker:latest
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+before_script:
+  - docker info
+
+build:
+  stage: build
+  script:
+    - docker build -t alprcamera-module .
+      
+test:
+  stage: test
+  script:
+    - docker run alprcamera-module npm test
+
+
+deploy:
+  stage: deploy
+  script:
+    - docker run -e CI_SERVER_HOST -e CI_PROJECT_ID -e CI_JOB_TOKEN alprcamera-module sh -c "echo \"@alprapp:registry=https://${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/\" > .npmrc && echo \"//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}\" >> .npmrc && npm publish"
+  dependencies:
+    - build  
+    - test
+

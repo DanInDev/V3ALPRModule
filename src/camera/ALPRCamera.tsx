@@ -86,33 +86,52 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
   const currentFilterRef = useRef<string>(filterOption);
 
   const [currentFilter, setCurrentFilter] = useState<string>(filterOption);
-
-  console.log ('First filter is: ', currentFilter)
   
-  useEffect(() => {
-    currentFilterRef.current = filterOption;
-    setCurrentFilter(filterOption);
-    console.log ('Filter changed to: ', currentFilter)
-  }, [filterOption]);
 
-  const findPlatesAndVerify = Worklets.createRunOnJS((ocrFrame: OCRFrame) => {
-    const ocrResult = applyFilterFunctions(ocrFrame, currentFilterRef.current);
+ /**
+ * Finds plates in the given OCR frame and verifies the results.
+ * 
+ * @param {OCRFrame} ocrFrame - The OCR frame containing the text blocks to analyze.
+ * @returns {void}
+ * 
+ * @NOTE This function applies the current filter to the OCR frame, recognizes plates,
+ *       and limits the API calls based on the given call limit.
+ */
 
-    if (OnPlateRecognized) {
-      OnPlateRecognized(ocrResult);
-    }
+const findPlatesAndVerify = Worklets.createRunOnJS((ocrFrame: OCRFrame) => {
+  const ocrResult = applyFilterFunctions(ocrFrame, currentFilterRef.current);
 
-    if (ocrResult !== null) {
-      callLimiter(ocrResult, callLimit || 0, (result: string | null) => {
-        if (result !== null) {
-          console.log(`APILimiter[${callLimit || 0}] has recognized: ${ocrResult}\n`);
-          if (OnCallLimitReached) {
-            OnCallLimitReached(result);
-          }
+  if (OnPlateRecognized) {
+    OnPlateRecognized(ocrResult);
+  }
+
+  if (ocrResult !== null) {
+    callLimiter(ocrResult, callLimit || 0, (result: string | null) => {
+      if (result !== null) {
+        console.log(`APILimiter[${callLimit || 0}] has recognized: ${ocrResult}\n`);
+        if (OnCallLimitReached) {
+          OnCallLimitReached(result);
         }
-      });
-    }
-  });
+      }
+    });
+  }
+});
+
+/**
+ * useEffect hook to update the current filter when the filterOption changes.
+ * 
+ * @param {string} filterOption - The new filter option to apply.
+ * @returns {void}
+ * 
+ * @NOTE This hook updates the current filter and logs the change.
+ */
+
+useEffect(() => {
+  currentFilterRef.current = filterOption;
+  setCurrentFilter(filterOption);
+  console.log('Filter changed to: ', currentFilter);
+}, [filterOption]);
+
 
 
   // Takes a picture utilzing the camera, and returns a blob with a callback and deletes the file
@@ -146,6 +165,7 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
    * And using async functions in worklets causes memory leaks on IOS.
    */
 
+  // IOS Frame Processor
   const frameProcessorIOS = useFrameProcessor((frame) => {
     'worklet'
 
@@ -154,6 +174,7 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
     findPlatesAndVerify(ocrFrame);
   }, [])
   
+  // Android Frame Processor
   const frameProcessorAndroid = useFrameProcessor((frame) => {
     'worklet'
     const ocrFrame = scanOCR(frame);
@@ -164,6 +185,7 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
     })
   }, [])
 
+  // Conditional choice of frame processor
   const frameProcessor = Platform.OS === 'ios' ? frameProcessorIOS : frameProcessorAndroid;
 
   
@@ -188,7 +210,9 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
         photo={true}
         video={true}
         enableZoomGesture={true}
+        outputOrientation='portrait'
         torch={torch}
+        onInitialized={() => console.log('Camera initialized on: ', Platform.OS)}
         resizeMode='cover'
       />
       {children}
