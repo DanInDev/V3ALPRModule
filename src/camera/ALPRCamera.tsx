@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Camera, runAsync, useCameraDevice, useCameraPermission, useFrameProcessor } from 'react-native-vision-camera';
 
 import { OCRFrame, scanOCR } from "@ismaelmoreiraa/vision-camera-ocr"
@@ -12,6 +12,51 @@ import { DefaultNoCameraDeviceError } from '../pages/noCameraDeviceError';
 
 import RNFS from 'react-native-fs';
 
+/**
+ * ALPRCamera component is a camera component that integrates with an Automatic License Plate Recognition (ALPR) system.
+ * It allows capturing pictures, recognizing license plates, and applying filters to the OCR frames.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <ALPRCamera
+ *   isActive={true}
+ *   OnPlateRecognized={handlePlateRecognized}
+ *   OnCallLimitReached={handleCallLimitReached}
+ *   OnPictureTaken={handlePictureTaken}
+ *   callLimit={5}
+ *   filterOption="DK"
+ *   cameraStyle={styles.camera}
+ *   PermissionPage={PermissionPage}
+ *   NoCameraDevicePage={NoCameraDevicePage}
+ *   takePictureButtonStyle={styles.takePictureButton}
+ *   takePictureButtonTextStyle={styles.takePictureButtonText}
+ *   takePictureButtonText="Take Picture"
+ *   torch="off"
+ * >
+ *   {children}
+ * </ALPRCamera>
+ * ```
+ *
+ * @param {object} props - The component props.
+ * @param {boolean} [props.isActive=true] - Determines if the camera is active.
+ * @param {function} props.OnPlateRecognized - Callback function when a license plate is recognized.
+ * @param {function} props.OnCallLimitReached - Callback function when the call limit is reached.
+ * @param {function} props.OnPictureTaken - Callback function when a picture is taken.
+ * @param {number} [props.callLimit] - The call limit for recognizing license plates.
+ * @param {string} [props.filterOption="DK"] - The filter option for OCR frames.
+ * @param {object} [props.cameraStyle] - The style object for the camera component.
+ * @param {React.Component} [props.PermissionPage] - The component to render when camera permission is not granted.
+ * @param {React.Component} [props.NoCameraDevicePage] - The component to render when no camera device is found.
+ * @param {object} [props.takePictureButtonStyle] - The style object for the take picture button.
+ * @param {object} [props.takePictureButtonTextStyle] - The style object for the take picture button text.
+ * @param {string} [props.takePictureButtonText] - The text to display on the take picture button.
+ * @param {string} [props.torch="off"] - The torch mode for the camera.
+ * @param {React.Component} [props.children] - The child components to render.
+ * @returns {React.Component} The ALPRCamera component.
+ * see {@link ALPRCameraProps} for more details.
+  */
+ 
 export const ALPRCamera: React.FC<ALPRCameraProps> = ({
   isActive = true,
   OnPlateRecognized,
@@ -24,7 +69,7 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
   NoCameraDevicePage,
   takePictureButtonStyle,
   takePictureButtonTextStyle,
-  takePictureButtonText,
+  takePictureButtonText, 
   torch = "off",
   children,
 }: ALPRCameraProps) => {
@@ -42,11 +87,7 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
 
   const [currentFilter, setCurrentFilter] = useState<string>(filterOption);
 
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
-
-
   console.log ('First filter is: ', currentFilter)
-
   
   useEffect(() => {
     currentFilterRef.current = filterOption;
@@ -100,7 +141,20 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
     return null;
   };
 
-  const frameProcessorExample = useFrameProcessor((frame) => {
+  /**
+   * Platform specific configuration for frame processors, since iOS and Android have different worklet implementations
+   * And using async functions in worklets causes memory leaks on IOS.
+   */
+
+  const frameProcessorIOS = useFrameProcessor((frame) => {
+    'worklet'
+
+    const ocrFrame = scanOCR(frame);
+
+    findPlatesAndVerify(ocrFrame);
+  }, [])
+  
+  const frameProcessorAndroid = useFrameProcessor((frame) => {
     'worklet'
     const ocrFrame = scanOCR(frame);
 
@@ -109,6 +163,9 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
       findPlatesAndVerify(ocrFrame);
     })
   }, [])
+
+  const frameProcessor = Platform.OS === 'ios' ? frameProcessorIOS : frameProcessorAndroid;
+
   
   // Conditional rendering after all hooks are defined
   if (!hasPermission) {
@@ -127,8 +184,9 @@ export const ALPRCamera: React.FC<ALPRCameraProps> = ({
         style={StyleSheet.absoluteFill}
         device={device}
         isActive={isActive}
-        frameProcessor={frameProcessorExample}
+        frameProcessor={frameProcessor}
         photo={true}
+        video={true}
         enableZoomGesture={true}
         torch={torch}
         resizeMode='cover'

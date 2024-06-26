@@ -12,7 +12,7 @@
     "test": "jest",
     "build": "tsc"
   },
-  "peerDendencies": {
+  "dependencies": {
     "react": "*",
     "react-native": "*",
     "@ismaelmoreiraa/vision-camera-ocr": "3.0.1",
