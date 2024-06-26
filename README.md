@@ -84,4 +84,9 @@ Open your project's `AndroidManifest.xml` and add the following lines inside the
 
 # Done!
 
-You are now good to go and use the react-native-alpr-component as you wish.
+You are now good to go and use the alpr-camera-module!
+
+You can see a simple implementation in App.tsx or a more advanced version used in the ALPR-Camera-TestAPP directory, which serves as an example implementation. 
+
+If you want to try the advanced version with more features such as geolocation for area codes, color showcase of mock API calls and much more, check the readme in that directory.
+

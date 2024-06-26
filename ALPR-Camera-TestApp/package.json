@@ -9,6 +9,7 @@
     "start": "react-native start",
     "test": "jest"
   },
+  
   "dependencies": {
     "@react-native-community/geolocation": "^3.2.0",
     "@react-native-community/hooks": "^3.0.0",
@@ -20,9 +21,7 @@
     "@ismaelmoreiraa/vision-camera-ocr": "3.0.1",
     "react-native-vision-camera": "4.0.1",
     "react-native-worklets-core": "^1.1.1",
-    "@alprapp/v2alpr-camera": "0.2.0"
-
-    
+    "alpr-camera-module": "1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
